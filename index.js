@@ -14,8 +14,6 @@ function animationHandler(btn) {
   if (isDotButtonClicked) {
     dotIndex = Number(btn.getAttribute("data-dot-index"));
     if (currentIndex == dotIndex) return;
-  }
-  if (isDotButtonClicked) {
     isNext = (dotIndex > currentIndex);
     isPrevious = (dotIndex < currentIndex);
   } else {
@@ -30,30 +28,18 @@ function animationHandler(btn) {
   }, 500);
   currentDot.classList.toggle("dot--activate");
   if (isNext) {
-    let nextIndex;
-    if (isDotButtonClicked) {
-      nextIndex = dotIndex;
-    } else {
-      nextIndex = (currentIndex + 1) % imgIdArray.length;
-    }
-    const nextImg = document.querySelector("#" + imgIdArray[nextIndex]);
-    const nextDot = document.querySelector("#" + dotIdArray[nextIndex]);
-    nextImg.classList.toggle("img--activate");
-    nextDot.classList.toggle("dot--activate");
-    nextImg.style.animation = "animate-in-left 0.5s linear forwards";
-    currentIndex = nextIndex;
+    const nextIndex = (isDotButtonClicked ? dotIndex : (currentIndex + 1) % imgIdArray.length);
+    upcomingImageHandler("next", nextIndex);
   } else {
-    let previousIndex;
-    if (isDotButtonClicked) {
-      previousIndex = dotIndex;
-    } else {
-      previousIndex = (currentIndex + 3) % imgIdArray.length;
-    }
-    const previousImg = document.querySelector("#" + imgIdArray[previousIndex]);
-    const previousDot = document.querySelector("#" + dotIdArray[previousIndex]);
-    previousImg.classList.toggle("img--activate");
-    previousDot.classList.toggle("dot--activate");
-    previousImg.style.animation = "animate-in-right 0.5s linear forwards";
-    currentIndex = previousIndex;
+    const previousIndex = (isDotButtonClicked ? dotIndex : (currentIndex + 3) % imgIdArray.length);
+    upcomingImageHandler("previous", previousIndex);
   }
+}
+function upcomingImageHandler(type, upcomingIndex) {
+  const upcomingImg = document.querySelector("#" + imgIdArray[upcomingIndex]);
+  const upcomingDot = document.querySelector("#" + dotIdArray[upcomingIndex]);
+  upcomingImg.classList.toggle("img--activate");
+  upcomingDot.classList.toggle("dot--activate");
+  upcomingImg.style.animation = (type == "next" ? "animate-in-left 0.5s linear forwards" : "animate-in-right 0.5s linear forwards");
+  currentIndex = upcomingIndex;
 }
